@@ -80,4 +80,4 @@ In the deleted idea:
 Any attempt to view a deleted idea should show the text "[deleted]".
 
 ## 6. Disputing Ideas
-See [future work](/future.md) (TODO: fix this link)
+See [future work](/future.md)
