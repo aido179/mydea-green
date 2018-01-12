@@ -1,0 +1,24 @@
+/* Allows clicking outside the box to close */
+.popmenu-invisible-page-cover{
+  position:fixed;
+  width:100vw;
+  height:100vh;
+  left: 0;
+  top: 0;
+  z-index:10;
+  /*background-color: rgba(0,0,0,0.2);*/
+}
+.popmenu-parent{
+  position: relative;
+}
+.popmenu-container{
+  position:absolute !important;
+  z-index:9000;
+  top:0px;
+  right:-10px;
+  overflow: hidden;
+  color:rgb(33, 37, 41);
+  background-color: #fff;
+  background-clip: border-box;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}

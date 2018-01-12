@@ -2,14 +2,19 @@ import React, { Component } from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
 
-import './css/oswald.css'
-import './css/open-sans.css'
-import './css/pure-min.css'
+import Unauthenticated from './unauthenticated.js';
+import Authenticated from './authenticated.js';
+
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.css';
+import './css/font-awesome-4.7.0/css/font-awesome.min.css'
 
 class App extends Component {
   constructor(props) {
     super(props)
+
+    this.setLoggedIn = this.setLoggedIn.bind(this);
+    this.isLoggedIn = this.isLoggedIn.bind(this);
 
     this.state = {
       storageValue: 0,
@@ -24,9 +29,9 @@ class App extends Component {
     getWeb3
     .then(results => {
       this.setState({
+        loggedIn:false,
         web3: results.web3
       })
-
       // Instantiate contract once web3 provided.
       this.instantiateContract()
     })
@@ -52,6 +57,7 @@ class App extends Component {
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
+      console.log(accounts);
       simpleStorage.deployed().then((instance) => {
         simpleStorageInstance = instance
 
@@ -67,25 +73,38 @@ class App extends Component {
     })
   }
 
+  setLoggedIn(){
+    console.log("logged in");
+    this.setState({
+      loggedIn:true
+    });
+
+  }
+  isLoggedIn(){
+    return this.state.loggedIn;
+  }
+
   render() {
+    var content;
+    if(this.isLoggedIn()){
+      content = <Authenticated web3={this.state.web3}/>
+    }else{
+      content = <Unauthenticated onButtonClicked={this.setLoggedIn}/>
+    }
     return (
       <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+          <a className="navbar-brand" href="#">Mydea</a>
         </nav>
 
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>Good to Go!</h1>
-              <p>Your Truffle Box is installed and ready.</p>
-              <h2>Smart Contract Example</h2>
-              <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
-              <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
-              <p>The stored value is: {this.state.storageValue}</p>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 col-md-12">
+              {content}
             </div>
+
           </div>
-        </main>
+        </div>
       </div>
     );
   }
